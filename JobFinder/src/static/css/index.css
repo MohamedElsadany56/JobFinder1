@@ -1,6 +1,9 @@
 /* General Styles */
+*{
+  --mainFontFamily: "Space Grotesk";
+}
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: var(--mainFontFamily);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -12,15 +15,22 @@ body {
 
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
-  background-color: #007bff;
+  background-color: #222222;
   padding: 1rem 2rem;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   gap: 1rem;
-
+  font-family: var(--mainFontFamily);
 }
-
+.logo 
+{
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  font-family: var(--mainFontFamily);
+}
 .nav-links {
   display: flex;
   list-style: none;
