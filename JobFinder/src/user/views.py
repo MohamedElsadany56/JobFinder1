@@ -84,4 +84,8 @@ def verify_email(request):
 
 def profile(request):
     profile = Profile.objects.get(user=request.user)
-    return render(request, 'user/profile.html', {'profile': profile})
+    return render(request, 'user/ProfilePage.html', {'profile': profile})
+
+def logout(request):
+    logout(request)
+    return render(request, 'signup')

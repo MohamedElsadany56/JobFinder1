@@ -45,6 +45,9 @@ LOGGING = {
         },
     },
 }
+# Session timeout in seconds (e.g., 30 minutes)
+SESSION_COOKIE_AGE = 1800  # 30 minutes
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Expire session when the browser is closed
 
 
 # Application definition
