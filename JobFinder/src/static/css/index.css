@@ -3,7 +3,7 @@
   --mainFontFamily: "Space Grotesk";
 }
 body {
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: var(--mainFontFamily);
   margin: 0;
   padding: 0;
   box-sizing: border-box;

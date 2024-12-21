@@ -121,12 +121,13 @@ a
 }
 
 .list-item .buttons .apply button {
-  background-color: #007bff;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+      background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
 }
 
 .list-item .buttons .apply button:hover {
@@ -177,4 +178,12 @@ a
 .filter-item input[type="text"]:focus {
   border-color: #007bff;
   outline: none;
+}
+form button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
