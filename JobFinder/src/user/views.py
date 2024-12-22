@@ -1,9 +1,12 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib.auth.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, logout as auth_logout
 from django.core.mail import send_mail
 from .models import Profile
-from django.contrib.auth import login
+from task.models import Task, Apply
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.contrib.auth.models import User
 def signup(request):
     if request.method == "POST":
         username = request.POST.get("UserName")
@@ -27,7 +30,7 @@ def signup(request):
 
         # Create User
         user = User.objects.create_user(username=username, email=email, password=password)
-        profile = user.profile
+        profile, _ = Profile.objects.get_or_create(user=user)  # Ensure Profile is created
         profile.generate_otp()
 
         # Send OTP
@@ -46,6 +49,7 @@ def signup(request):
         return redirect("user:verify_email")
 
     return render(request, "registration/signup.html")
+
 
 def verify_email(request):
     if request.method == "POST":
@@ -67,12 +71,10 @@ def verify_email(request):
                 login(request, user)
 
                 # Safely delete session key
-                if "email" in request.session:
-                    del request.session["email"]
+                request.session.pop("email", None)
 
-                return redirect("user:profile")  # Redirect to profile
+                return redirect("user:profile", username=user.username)  # Redirect to profile
             else:
-                # Ensure that the error message is passed into the context correctly
                 return render(request, "user/verify_email.html", {"error": "Invalid OTP"})
         except User.DoesNotExist:
             return render(request, "user/verify_email.html", {"error": "User not found"})
@@ -80,12 +82,32 @@ def verify_email(request):
     return render(request, "user/verify_email.html")
 
 
+def profile(request, username):
+
+    # Retrieve the user and dynamically create their profile if it doesn't exist
+    user = get_object_or_404(User, username=username)
+    user_profile, _ = Profile.objects.get_or_create(user=user)
+
+    # Get tasks created by the user
+    created_tasks = Task.objects.filter(owner=user)
+
+    # Get tasks the user has applied for
+    applied_tasks = Apply.objects.filter(applicant=user)
+    # Render the profile page with the retrieved data
+    return render(request, 'user/ProfilePage.html', {
+        'profile': user_profile,
+        'created_tasks': created_tasks,
+        'applied_tasks': applied_tasks,
+    })
 
 
-def profile(request):
-    profile = Profile.objects.get(user=request.user)
-    return render(request, 'user/ProfilePage.html', {'profile': profile})
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    """
+    Signal to automatically create a Profile for a new User.
+    """
+    if created:
+        Profile.objects.get_or_create(user=instance)
 
-def logout(request):
-    logout(request)
-    return render(request, 'signup')
+
+

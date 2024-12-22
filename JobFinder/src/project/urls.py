@@ -20,14 +20,18 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import redirect
 from project import views
+from django.contrib.auth.views import LoginView
+
 urlpatterns = [
     path('', views.homepage, name='homepage'),
+    path('login/', LoginView.as_view(), name='login'),
     path('howitworks/', views.howitworks, name='howitworks'),
     path('user/', include('django.contrib.auth.urls')),
     path('user/', include('user.urls',namespace='user')),
     path('api-auth/', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
     path('tasks/', include('task.urls', namespace='tasks')),
+    path('logout/', views.logout, name='logout'),
 
 ]
 

@@ -22,7 +22,7 @@
         <select id="location" name="location">
           <option value="">Select location</option>
           {% for location in locations %}
-          <option value="{{ location }}" {% if request.GET.location == location %}selected{% endif %}>{{ location }}</option>
+            <option value="{{ location }}" {% if request.GET.location == location %}selected{% endif %}>{{ location }}</option>
           {% endfor %}
         </select>
       </div>
@@ -31,56 +31,22 @@
         <select id="category" name="category">
           <option value="">Select category</option>
           {% for category in categories %}
-          <option value="{{ category }}" {% if request.GET.category == category %}selected{% endif %}>{{ category }}</option>
+            <option value="{{ category }}" {% if request.GET.category == category %}selected{% endif %}>{{ category }}</option>
           {% endfor %}
         </select>
       </div>
       <div class="filter-item">
-        <label for="experience">Experience</label>
-        <select id="experience" name="experience">
-          <option value="">Select experience</option>
-          <option value="1" {% if request.GET.experience == '1' %}selected{% endif %}>1-2 years</option>
-          <option value="3" {% if request.GET.experience == '3' %}selected{% endif %}>3-5 years</option>
-          <option value="5" {% if request.GET.experience == '5' %}selected{% endif %}>5+ years</option>
+        <label for="disability">Disability</label>
+        <select id="disability" name="disability">
+          <option value="">Choose</option>
+          <option value="Yes" {% if request.GET.disability == 'Yes' %}selected{% endif %}>Yes</option>
+          <option value="No" {% if request.GET.disability == 'No' %}selected{% endif %}>No</option>
         </select>
       </div>
-      <div class="filter-item">
-        <label for="job-type">Job type</label>
-        <select id="job-type" name="job_type">
-          <option value="">Select job type</option>
-          <option value="full-time" {% if request.GET.job_type == 'full-time' %}selected{% endif %}>Full-time</option>
-          <option value="part-time" {% if request.GET.job_type == 'part-time' %}selected{% endif %}>Part-time</option>
-          <option value="contract" {% if request.GET.job_type == 'contract' %}selected{% endif %}>Contract</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <label for="qualification">Qualification</label>
-        <select id="qualification" name="qualification">
-          <option value="">Select qualification</option>
-          <option value="bachelor" {% if request.GET.qualification == 'bachelor' %}selected{% endif %}>Bachelor's</option>
-          <option value="master" {% if request.GET.qualification == 'master' %}selected{% endif %}>Master's</option>
-          <option value="phd" {% if request.GET.qualification == 'phd' %}selected{% endif %}>PhD</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <label for="gender">Gender</label>
-        <select id="gender" name="gender">
-          <option value="">Select gender</option>
-          <option value="male" {% if request.GET.gender == 'male' %}selected{% endif %}>Male</option>
-          <option value="female" {% if request.GET.gender == 'female' %}selected{% endif %}>Female</option>
-          <option value="other" {% if request.GET.gender == 'other' %}selected{% endif %}>Other</option>
-        </select>
-      </div>
-      <div class="filter-item">
-        <label for="gender">Disability </label>
-        <select id="gender" name="gender">
-          <option value="">Select gender</option>
-          <option value="male" {% if request.GET.gender == 'Yes' %}selected{% endif %}>Yes</option>
-          <option value="female" {% if request.GET.gender == 'No ' %}selected{% endif %}>No</option>
-        </select>
-      </div>
+      
       <button type="submit">Apply Filters</button>
     </form>
+    
   </div>
 
   <!-- Job Listings Section (Right) -->
@@ -112,9 +78,20 @@
                 <div class="country">
                   <div class="location"><p>Location: {{ task.location }}</p></div>
                   <div class="duration"><p>Deadline: {{ task.deadline|date:'d M Y' }}</p></div>
+                  <div class="location"><p>Requires Disability: {{ task.disability }}</p></div>
+
                 </div>
               </div>
             </div>
+            <div class="buttons">
+              <div class="apply">
+                  <a href="{% url 'tasks:view_applicants' task.slug %}">
+                      <button>View Applicants</button>
+                  </a>
+              </div>
+          </div>
+          
+            
             <div class="buttons">
               <div class="apply">
                 <a href="{% url 'tasks:taskDetail' task.slug %}"><button>Apply</button></a>

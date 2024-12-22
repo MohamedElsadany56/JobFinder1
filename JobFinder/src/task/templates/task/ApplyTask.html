@@ -1,7 +1,8 @@
 {% extends 'baseGeneric.html' %}
 {% load static %}
+{% load bootstrap5 %}
 
-{% block title %}{{task}}{% endblock %}
+{% block title %}{{ task.title }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/ApplyTask.css' %}">
@@ -13,33 +14,44 @@
     <div class="task-box">
       <ul>
         <li class="task-details">
-          <h3>{{task.title}}</h3>
+          <h3>{{ task.title }}</h3>
           <div class="task-info">
             <div class="price-location">
-              <span class="price"
-                ><i class="fas fa-dollar-sign"></i> {{task.budget}}</span
-              >
-              <span class="location"
-                ><i class="fas fa-map-marker-alt"></i>{{task.location}}</span
-              >
+              <span class="price">
+                <i class="fas fa-dollar-sign"></i> {{ task.budget }}
+              </span>
+              <span class="location">
+                <i class="fas fa-map-marker-alt"></i> {{ task.location }}
+              </span>
             </div>
             <div class="time-info">
-              <span class="duration"
-              {% load task_extras %}
-                ><i class="far fa-clock"></i> {{ task|calculate_duration }} </span
-              >
-              <span class="deadline"
-                ><i class="far fa-calendar-alt"></i> {{task.deadline}}</span
-              >
+              <span class="deadline">
+                <i class="far fa-calendar-alt"></i> {{ task.deadline }}
+              </span>
+              <span class="published-at">
+                <i class="far fa-clock"></i> Published: {{ task.publishedAt }}
+              </span>
             </div>
+            <div class="category-info">
+              <span class="category">
+                <i class="fas fa-tag"></i> {{ task.get_category_display }}
+              </span>
+            </div>
+            <div class="owner-info">
+              <span class="owner">
+                <i class="fas fa-user"></i> Created by: 
+                <a href="/user/profile/{{ task.owner.username }}" class="profile-link">{{ task.owner.username }}</a>
+              </span>
+            </div>
+            
             <div class="applicants-info">
-              <span class="applicants-count"
-                ><i class="fas fa-users"></i> {{task.applicants.count}}</span
-              >
+              <span class="applicants-count">
+                <i class="fas fa-users"></i> Applicants: {{ task.applicants.count }}
+              </span>
             </div>
           </div>
           <p class="task-description">
-            {{task.taskDescription}}
+            {{ task.taskDescription }}
           </p>
         </li>
       </ul>
@@ -48,54 +60,13 @@
       <div class="main-header">
         <h2>Apply For A Task</h2>
       </div>
-
       <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <ul>
-          <li class="Employer">
-            <a href="#"><i class="fa-regular fa-user"></i>Has Disability</a>
-          </li>
-          <li class="Candidate">
-            <a href="#"
-              ><i class="fa-solid fa-briefcase"></i>Does not have
-              Disability</a
-            >
-          </li>
-        </ul>
-        <input
-          type="text"
-          id="UserName"
-          class="UserName"
-          name="UserName"
-          placeholder="Enter Your Name"
-        />
-        <input
-          type="text"
-          id="PastExperience"
-          class="PastExperience"
-          name="PastExperience"
-          placeholder="Enter Your PastExperience"
-        />
-        <input
-          type="text"
-          id="price"
-          name="price"
-          placeholder="Enter Required Price"
-        />
-        <textarea
-          id="Jop"
-          class="Jop"
-          name="Jop"
-          placeholder="Enter Disability Description"
-        ></textarea>
+        {% bootstrap_form form %}
         <button type="submit" id="button">Apply</button>
       </form>
     </div>
   </div>
-  {% block extra_js %}
-<script src="static/js/ApplyTask.js"></script>
-{% endblock %}
 </main>
-
 {% endblock %}
-
+<script src="{% static 'js/ApplyTask.js' %}"></script>
